@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ImageUtils</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_resize_image">压缩图片</string>
+</resources>
