@@ -18,7 +18,7 @@ import com.example.lx.imageutils.utils.Utils;
 import java.io.FileNotFoundException;
 
 public class ResizeImageActivity extends AppCompatActivity implements View.OnClickListener{
-    //for test
+    //for test for test 2
     private TextView infoText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
