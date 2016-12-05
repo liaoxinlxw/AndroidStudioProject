@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -123,7 +124,7 @@ public class Utils {
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         int options = 100;
         //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-        while ( baos.toByteArray().length / 1024>100) {
+        while ( baos.toByteArray().length / 1024>50) {
             //重置baos即清空baos
             baos.reset();
             //这里压缩options%，把压缩后的数据存放到baos中
@@ -133,8 +134,52 @@ public class Utils {
         //把压缩后的数据baos存放到ByteArrayInputStream中
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
         //把ByteArrayInputStream数据生成图片
+        File f = new File("/sdcard/lx", "resize_"+System.currentTimeMillis()+".jpg");
+        if(!f.getParentFile().exists()){
+            f.getParentFile().mkdirs();
+        }
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            out.write(baos.toByteArray());
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
         return bitmap;
+    }
+
+    /** 保存方法 */
+    public void saveBitmap(Bitmap bm) {
+        File f = new File("/sdcard/lx", "resize_"+System.currentTimeMillis()+".jpg");
+        if(!f.getParentFile().exists()){
+            f.getParentFile().mkdirs();
+        }
+        if (f.exists()) {
+            f.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(f);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
     public static Bitmap comp(Bitmap image) {
 
@@ -176,7 +221,7 @@ public class Utils {
 
     public static long getBitmapSize(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         InputStream isBm = new ByteArrayInputStream(baos.toByteArray());
         int size = 0;
         try {
